@@ -18,26 +18,25 @@ int main() {
         dp[0] = 1;
 
         for(int i = 1; i < n; i++){
-            // 21031
-            // 2
-
-            // 2,1
-            // 21, not alllowed
-
-            // 2,10
-
-            // 2, 10, 3
-            if((str[i-1]-'0' > 0 && str[i-1]-'0' <= 2) && (str[i] - '0' > 0 && str[i] - '0' <= 7)){
-                if(i < n - 1 && str[i+1] != '0'){
+            // if between 1-27 and no zero's (split-able)
+            if(stoi(str.substr(i-1,2)) > 0 && stoi(str.substr(i-1,2)) < 28 && str[i] != '0' && str[i-1] != '0'){
+                if(n == 2){
+                    dp[i] = 2;
+                }
+                else if(i < n - 1 && str[i+1] != '0'){
                     if(i == 1) {
-                        dp[i] = dp[i-1] + 1;
+                        dp[i] = 2;                      // len == 2, split-able, next not zero
                     }
                     else {
-                        dp[i] = dp[i-1] + dp[i-2];
+                        dp[i] = dp[i-1] + dp[i-2];      // len > 2, split-able, next not zero
                     }
-                } else
-                    dp[i] = dp[i-1];
+                } else if (i == n - 1) {
+                    dp[i] = dp[i - 1] + dp[i - 2];      // split-able, on the last one
+                } else {
+                    dp[i] = dp[i - 1];                   // split-able, but the next one is zero
+                }
             }
+            // can't be split
             else{
                 dp[i] = dp[i-1];
             }
